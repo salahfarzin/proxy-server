@@ -1,0 +1,11 @@
+/.fleet
+/.vscode
+/.idea
+
+/.env
+
+/bin
+/storage/tmp
+/storage/pdf-results
+/*.log
+/.DS_Store
