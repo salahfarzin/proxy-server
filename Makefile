@@ -22,6 +22,3 @@ darwin:
 windows:
 	CGO_ENABLE=0 GOOS=windows GOARCH=amd64 go build -o bin/server-windows-amd64.exe ${LDFLAGS} main.go
 	CGO_ENABLE=0 GOOS=windows GOARCH=386 go build -o bin/server-windows-i386.exe ${LDFLAGS} main.go
-
-zip:
-	zip -r server-bin-${VERSION}.zip bin configs web
