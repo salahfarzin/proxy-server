@@ -22,24 +22,6 @@ const (
 	envTmpPath     = "TMP_PATH"
 )
 
-type (
-	Answer struct {
-		Choice  int    `json:"choice"`
-		Title   string `json:"title"`
-		Desc    string `json:"description"`
-		ImgLink string `json:"imgLink"`
-	}
-	Question struct {
-		TestId  int      `json:"test_id"`
-		Type    string   `json:"type"`
-		Number  int      `json:"number"`
-		Title   string   `json:"title"`
-		Desc    string   `json:"description"`
-		ImgLink string   `json:"imgLink"`
-		Answers []Answer `json:"answers"`
-	}
-)
-
 func Proxy(w http.ResponseWriter, r *http.Request) {
 	r.ParseMultipartForm(1024)
 
@@ -143,7 +125,7 @@ func download(url string) {
 }
 
 func downloadQuestionImages(response *types.RemoteResponse) error {
-	var questions []Question
+	var questions []types.Question
 
 	byteItems, err := json.Marshal(response.Items)
 	if err != nil {
