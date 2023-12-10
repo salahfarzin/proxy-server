@@ -55,19 +55,21 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	if response.Status != "Success" {
+	status := "Error"
+	if response.Success {
+		status = "Success"
 		w.WriteHeader(response.StatusCode)
 	}
-
-	w.Header().Set("Content-Type", contentType)
-	json.NewEncoder(w).Encode(response)
 
 	logger.Info(r.URL.Path, zapcore.Field{
 		Key:       logResponseKey,
 		Type:      zapcore.FieldType(zapcore.StringType),
-		String:    string(response.Status),
+		String:    status,
 		Interface: response,
 	})
+
+	w.Header().Set("Content-Type", contentType)
+	json.NewEncoder(w).Encode(response)
 }
 
 func makeRequest(r *http.Request) types.RemoteResponse {
@@ -100,7 +102,10 @@ func makeRequest(r *http.Request) types.RemoteResponse {
 		logger.Error("remote server", err)
 	}
 
-	req.Header.Add("Cookie", "XDEBUG_SESSION=PHPSTORM")
+	if os.Getenv("APP_ENV") == "dev" {
+		req.Header.Add("Cookie", "XDEBUG_SESSION=PHPSTORM")
+	}
+
 	req.Header.Add("Accept", contentType)
 	req.Header.Add("Content-Type", contentType)
 	req.Header.Add("Authorization", r.Header.Get("Authorization"))

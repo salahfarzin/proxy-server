@@ -2,7 +2,7 @@ package types
 
 type RemoteResponse struct {
 	StatusCode int
-	Status     string `json:"status"`
+	Success    bool   `json:"success"`
 	Message    string `json:"message"`
 	Items      any    `json:"return"`
 }
