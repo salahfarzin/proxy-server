@@ -58,7 +58,6 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 	status := "Error"
 	if response.Success {
 		status = "Success"
-		w.WriteHeader(response.StatusCode)
 	}
 
 	logger.Info(r.URL.Path, zapcore.Field{
@@ -69,6 +68,7 @@ func Proxy(w http.ResponseWriter, r *http.Request) {
 	})
 
 	w.Header().Set("Content-Type", contentType)
+	w.WriteHeader(response.StatusCode)
 	json.NewEncoder(w).Encode(response)
 }
 
@@ -116,8 +116,8 @@ func makeRequest(r *http.Request) types.RemoteResponse {
 	}
 	defer res.Body.Close()
 
-	json.NewDecoder(res.Body).Decode(&response)
 	response.StatusCode = res.StatusCode
+	json.NewDecoder(res.Body).Decode(&response)
 
 	return response
 }
