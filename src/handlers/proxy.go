@@ -126,7 +126,10 @@ func download(url string) {
 	segments := strings.Split(url, "/")
 	fileName := fmt.Sprintf("%s-%s", segments[len(segments)-2], segments[len(segments)-1])
 
-	utils.Download(url, fmt.Sprintf("%s/%s", os.Getenv(envTmpPath), fileName))
+	err := utils.Download(url, fmt.Sprintf("%s/%s", os.Getenv(envTmpPath), fileName))
+	if err != nil {
+		logger.Error(err.Error(), err)
+	}
 }
 
 func downloadQuestionImages(response *types.RemoteResponse) error {
@@ -165,7 +168,7 @@ func downloadQuestionImages(response *types.RemoteResponse) error {
 func mapUrl(url string) string {
 	segments := strings.Split(url, "/")
 
-	var newUrl string = fmt.Sprintf("%s:%s", os.Getenv("APP_URL"), os.Getenv("MAPPED_PORT"))
+	var newUrl string = fmt.Sprintf("%s:%s", os.Getenv("CLIENT_URL"), os.Getenv("CLIENT_PORT"))
 	for i, v := range segments {
 		if i <= 2 {
 			continue

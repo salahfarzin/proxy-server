@@ -7,7 +7,6 @@ import (
 )
 
 func Download(url string, path string) error {
-
 	// Get the data
 	resp, err := http.Get(url)
 	if err != nil {
